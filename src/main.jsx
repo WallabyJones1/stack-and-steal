@@ -1,42 +1,45 @@
-// src/main.jsx
-
-import React from 'react';
+import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import './index.css';
+import './index.css'; // Imports the Tailwind base styles
 
+// Solana Wallet Adapter imports
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  BackpackWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
-
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
-import { AutoConnectProvider } from './context/AutoConnectProvider.jsx';
 
-require('@solana/wallet-adapter-react-ui/styles.css');
+// Import the wallet adapter's default CSS
+import '@solana/wallet-adapter-react-ui/styles.css';
 
-const network = 'devnet';
-const endpoint = clusterApiUrl(network);
+// This component wraps our entire application to provide wallet functionality.
+const WalletAdapterWrapper = () => {
+  const network = "devnet"; 
+  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-const wallets = [
-  new PhantomWalletAdapter(),
-  new SolflareWalletAdapter({ network }),
-  new BackpackWalletAdapter(),
-];
+  // We are only including the Phantom wallet for now to ensure stability.
+  // More wallets can be added to this array later.
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+    ],
+    [network]
+  );
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+  return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <AutoConnectProvider>
-            <App />
-          </AutoConnectProvider>
+          <App />
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <WalletAdapterWrapper />
   </React.StrictMode>
 );

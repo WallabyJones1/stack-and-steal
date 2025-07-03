@@ -1,32 +1,18 @@
-    /** @type {import('tailwindcss').Config} */
-    const colors = require('tailwindcss/colors'); // Import default colors for explicit extension
-
-    module.exports = {
-      content: [
-        "./index.html",
-        "./src/**/*.{js,ts,jsx,tsx}", // This covers all your React components
-      ],
-      theme: {
-        extend: {
-          // Explicitly extend colors to ensure all default shades are available,
-          // including gray-950 which is part of Tailwind's extended gray palette.
-          colors: {
-            gray: colors.gray,
-            // You can explicitly add other default colors if you plan to use them
-            // blue: colors.blue,
-            // green: colors.green,
-            // red: colors.red,
-            // yellow: colors.yellow,
-            // purple: colors.purple,
-            // cyan: colors.cyan,
-            // amber: colors.amber,
-            // indigo: colors.indigo,
-            // teal: colors.teal,
-          },
-        },
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}", // Scans all your component files
+    "./node_modules/@solana/wallet-adapter-react-ui/lib/**/*.{js,jsx,ts,tsx}" // Scans the wallet adapter components
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        // Adding custom fonts to use in the app
+        sans: ['Poppins', 'sans-serif'],
+        'slab': ['Roboto Slab', 'serif'],
       },
-      plugins: [
-        require('tailwindcss-animate'), // Essential for shadcn/ui animations
-      ],
-    }
-    
+    },
+  },
+  plugins: [],
+}

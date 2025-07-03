@@ -1,47 +1,47 @@
-// src/App.jsx
-
-import React, { useState } from 'react';
+import { useState } from 'react';
+import InGameScreen from './pages/InGameScreen.jsx';
+import LandingPage from './pages/LandingPage.jsx';
+import PostGameResults from './pages/PostGameResults.jsx';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
-import LandingPage from './pages/LandingPage';
-import InGameScreen from './pages/InGameScreen';
-import PostGameResults from './pages/PostGameResults';
-
 function App() {
+  const [currentPage, setCurrentPage] = useState('landing');
+  const [winner, setWinner] = useState(null);
   const { connected } = useWallet();
 
-  // Pages: 'landing' | 'game' | 'results'
-  const [screen, setScreen] = useState('landing');
-  const [winner, setWinner] = useState(null);
-
-  const handleStartGame = () => setScreen('game');
-  const handleEndGame = (winnerId) => {
-    setWinner(winnerId);
-    setScreen('results');
+  const handleGameEnd = (winnerData) => {
+    setWinner(winnerData);
+    setCurrentPage('results');
   };
-  const handleRestart = () => {
+
+  const handlePlayAgain = () => {
     setWinner(null);
-    setScreen('landing');
+    setCurrentPage('landing'); 
+  };
+  
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'in-game':
+        // Using a key here is a simple way to force React to re-create the component
+        // and re-run its state initialization when we want to play a new game.
+        return <InGameScreen key={Date.now()} onGameEnd={handleGameEnd} />;
+      case 'results':
+        return <PostGameResults winner={winner} onPlayAgain={handlePlayAgain} />;
+      case 'landing':
+      default:
+        // Pass a function to start the game and the wallet connection status
+        return <LandingPage onStartGame={() => setCurrentPage('in-game')} connected={connected} />;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black text-white p-4">
-      <div className="flex justify-end p-2">
-        <WalletMultiButton className="!bg-green-700 hover:!bg-green-800 transition-all" />
+    <div className="bg-slate-900 font-sans min-h-screen">
+      {/* The Wallet button is now part of the main App layout, always accessible */}
+      <div className="absolute top-5 right-5 z-50">
+        <WalletMultiButton />
       </div>
-
-      {!connected ? (
-        <div className="flex flex-col items-center justify-center h-[80vh] text-center">
-          <h1 className="text-3xl font-bold mb-4">Connect your wallet to begin</h1>
-        </div>
-      ) : screen === 'landing' ? (
-        <LandingPage onStart={handleStartGame} />
-      ) : screen === 'game' ? (
-        <InGameScreen onGameOver={handleEndGame} />
-      ) : (
-        <PostGameResults winner={winner} onRestart={handleRestart} />
-      )}
+      {renderPage()}
     </div>
   );
 }
