@@ -30,8 +30,15 @@ function App() {
         return <PostGameResults winner={winner} onPlayAgain={handlePlayAgain} />;
       case 'landing':
       default:
-        // Pass a function to start the game and the wallet connection status
-        return <LandingPage onStartGame={() => setCurrentPage('in-game')} connected={connected} />;
+        // --- THIS IS THE FIX ---
+        // We are now passing the correct prop names: 'onStartPractice' and 'onNavigateToLobby'
+        return (
+          <LandingPage 
+            onStartPractice={() => setCurrentPage('in-game')} 
+            onNavigateToLobby={() => alert("Multiplayer Lobby Coming Soon!")} // Placeholder for now
+            connected={connected} 
+          />
+        );
     }
   };
 
