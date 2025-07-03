@@ -3,7 +3,7 @@ import { Crown } from 'lucide-react';
 
 function PostGameResults({ winner, onPlayAgain }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-slate-900 text-white p-4 font-sans">
       <motion.div
         className="text-center bg-slate-800/50 border border-white/10 backdrop-blur-lg rounded-2xl p-8 md:p-12 w-full max-w-lg"
         initial={{ opacity: 0, scale: 0.7 }}

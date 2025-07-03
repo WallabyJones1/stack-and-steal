@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Shield, Bot, Gem, Droplets, Wallet } from 'lucide-react';
+import { Shield, Bot, Gem, Droplets } from 'lucide-react';
+import logoImage from '../assets/STACK_N_STEAL_LOGO_trans normal.PNG';
 import Card from '../components/Card.jsx';
 
 // New component for the animated background grid
@@ -30,12 +31,13 @@ const AnimatedCardGrid = () => {
     >
       {[...Array(24)].map((_, i) => (
         <motion.div key={i} variants={cardVariants} className="opacity-20">
-          <Card value={cardValues[i % cardValues.length]} />
+          <Card card={{ value: cardValues[i % cardValues.length] }} />
         </motion.div>
       ))}
     </motion.div>
   );
 };
+
 
 function LandingPage({ onStartPractice, onNavigateToLobby, connected }) {
   const modeButtonClasses = "w-full px-8 py-4 bg-slate-800/70 border border-slate-600 text-slate-200 font-semibold text-xl rounded-lg shadow-lg hover:bg-slate-700 hover:border-indigo-400 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:border-slate-600 backdrop-blur-sm";
@@ -46,16 +48,18 @@ function LandingPage({ onStartPractice, onNavigateToLobby, connected }) {
       <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
 
       <motion.div 
-        className="text-center z-10"
+        className="text-center z-10 flex flex-col items-center"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <h1 className="text-7xl md:text-8xl font-black text-white font-slab tracking-tighter [text-shadow:0_5px_15px_rgba(0,0,0,0.5)]">
-          Stack & Steal
-        </h1>
-        <p className="text-2xl text-indigo-300 font-semibold mt-2">
-          by Rogue Vibes
+        <img 
+          src={logoImage} 
+          alt="Stack N Steal Logo" 
+          className="w-full max-w-lg mb-8"
+        />
+        <p className="text-3xl text-slate-300 font-semibold mt-2 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
+          Stack. Steal. Win.
         </p>
       </motion.div>
 

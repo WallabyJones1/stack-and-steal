@@ -23,19 +23,15 @@ function App() {
   const renderPage = () => {
     switch (currentPage) {
       case 'in-game':
-        // Using a key here is a simple way to force React to re-create the component
-        // and re-run its state initialization when we want to play a new game.
         return <InGameScreen key={Date.now()} onGameEnd={handleGameEnd} />;
       case 'results':
         return <PostGameResults winner={winner} onPlayAgain={handlePlayAgain} />;
       case 'landing':
       default:
-        // --- THIS IS THE FIX ---
-        // We are now passing the correct prop names: 'onStartPractice' and 'onNavigateToLobby'
         return (
           <LandingPage 
             onStartPractice={() => setCurrentPage('in-game')} 
-            onNavigateToLobby={() => alert("Multiplayer Lobby Coming Soon!")} // Placeholder for now
+            onNavigateToLobby={() => alert("Multiplayer Lobby Coming Soon!")}
             connected={connected} 
           />
         );
@@ -44,7 +40,6 @@ function App() {
 
   return (
     <div className="bg-slate-900 font-sans min-h-screen">
-      {/* The Wallet button is now part of the main App layout, always accessible */}
       <div className="absolute top-5 right-5 z-50">
         <WalletMultiButton />
       </div>
