@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom base styles for a professional look and feel */
+/* Custom base styles for the light theme */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0F172A; /* Default background to match the game screen */
-  color: #e2e8f0; /* Default text color */
+  background-color: #FFFFFF; /* Default to white */
+  color: #1a202c; /* Default dark text color */
 }

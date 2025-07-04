@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
-import './index.css'; // Imports the Tailwind base styles
+import './index.css';
 
 // Solana Wallet Adapter imports
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
@@ -12,13 +12,14 @@ import { clusterApiUrl } from '@solana/web3.js';
 // Import the wallet adapter's default CSS
 import '@solana/wallet-adapter-react-ui/styles.css';
 
+// --- FIX: Update the import to use the .jsx extension ---
+import { SocketProvider } from './context/SocketContext.jsx';
+
 // This component wraps our entire application to provide wallet functionality.
 const WalletAdapterWrapper = () => {
   const network = "devnet"; 
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  // We are only including the Phantom wallet for now to ensure stability.
-  // More wallets can be added to this array later.
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -30,7 +31,9 @@ const WalletAdapterWrapper = () => {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <App />
+          <SocketProvider>
+            <App />
+          </SocketProvider>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
